@@ -37,7 +37,7 @@ publish:
 
 vendor/*: Gopkg.lock
 	@$(MAKE) dep
-	dep ensure -vendor-only -v
+	@dep ensure -v
 
 .PHONY: dep
 dep:
