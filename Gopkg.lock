@@ -2,10 +2,61 @@
 
 
 [[projects]]
+  name = "github.com/aws/aws-sdk-go"
+  packages = [
+    "aws",
+    "aws/awserr",
+    "aws/awsutil",
+    "aws/client",
+    "aws/client/metadata",
+    "aws/corehandlers",
+    "aws/credentials",
+    "aws/credentials/ec2rolecreds",
+    "aws/credentials/endpointcreds",
+    "aws/credentials/stscreds",
+    "aws/csm",
+    "aws/defaults",
+    "aws/ec2metadata",
+    "aws/endpoints",
+    "aws/request",
+    "aws/session",
+    "aws/signer/v4",
+    "internal/sdkio",
+    "internal/sdkrand",
+    "internal/sdkuri",
+    "internal/shareddefaults",
+    "private/protocol",
+    "private/protocol/eventstream",
+    "private/protocol/eventstream/eventstreamapi",
+    "private/protocol/query",
+    "private/protocol/query/queryutil",
+    "private/protocol/rest",
+    "private/protocol/restxml",
+    "private/protocol/xml/xmlutil",
+    "service/s3",
+    "service/s3/s3iface",
+    "service/s3/s3manager",
+    "service/sts"
+  ]
+  revision = "bc3f534c19ffdf835e524e11f0f825b3eaf541c3"
+  version = "v1.14.31"
+
+[[projects]]
+  name = "github.com/go-ini/ini"
+  packages = ["."]
+  revision = "358ee7663966325963d4e8b2e1fbd570c5195153"
+  version = "v1.38.1"
+
+[[projects]]
   name = "github.com/inconshreveable/mousetrap"
   packages = ["."]
   revision = "76626ae9c91c4f2a10f34cad8ce83ea42c93bb75"
   version = "v1.0"
+
+[[projects]]
+  name = "github.com/jmespath/go-jmespath"
+  packages = ["."]
+  revision = "0b12d6b5"
 
 [[projects]]
   name = "github.com/spf13/cobra"
@@ -22,6 +73,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "97eb70e5b0cdcc0eaa2731c309de85cff66b263adf3904f48deb7f66d0d2a5a2"
+  inputs-digest = "0ca9d1df81c677c4b2c1818847f4478710fc8124dfeabc185ddc0286748f1e9c"
   solver-name = "gps-cdcl"
   solver-version = 1
