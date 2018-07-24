@@ -35,6 +35,11 @@ publish:
 		cp ./dist/$(NAME)-$(VERSION)-$$os-amd64.tar.gz ./dist/publish/; \
 	done
 
+.PHONY: release
+release:
+	git tag v$(VERSION)
+	git push origin v$(VERSION)
+
 vendor/*: Gopkg.lock
 	@$(MAKE) dep
 	@dep ensure -v
