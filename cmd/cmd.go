@@ -9,7 +9,7 @@ import (
 // RootCmd represents the base command when called without any subcommands
 var (
 	RootCmd = &cobra.Command{
-		Use:           "kube",
+		Use:           "ev",
 		Short:         "CLI tool for managing evaluation result",
 		Long:          "CLI tool for managing evaluation result ",
 		SilenceErrors: true,
