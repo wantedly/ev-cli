@@ -25,14 +25,14 @@ dist:
 	cd dist && \
 	$(DIST_DIRS) cp ../LICENSE {} \; && \
 	$(DIST_DIRS) cp ../README.md {} \; && \
-	$(DIST_DIRS) tar -zcf $(NAME)-$(VERSION)-{}.tar.gz {} \; && \
+	$(DIST_DIRS) tar -zcf $(NAME)-v$(VERSION)-{}.tar.gz {} \; && \
 	cd ..
 
 .PHONY: publish
 publish:
 	mkdir -p dist/publish
 	@for os in $(OS); do \
-		cp ./dist/$(NAME)-$(VERSION)-$$os-amd64.tar.gz ./dist/publish/; \
+		cp ./dist/$(NAME)-v$(VERSION)-$$os-amd64.tar.gz ./dist/publish/; \
 	done
 
 .PHONY: release
