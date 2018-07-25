@@ -11,6 +11,7 @@ before_deploy:
   - make cross-build
   - make dist
   - make publish
+  - mkdir -p public-script && cp script/install.sh public-script/ev
 deploy:
   - provider: releases
     skip_cleanup: true
@@ -30,3 +31,13 @@ deploy:
     acl: public_read
     on:
       tags: true
+  - provider: s3
+    access-key-id: "$AWS_ACCESS_KEY_ID"
+    secret-access-key: "$AWS_SECRET_ACCESS_KEY"
+    region: "$AWS_REGION"
+    bucket: get.wantedlyapp.com
+    skip_cleanup: true
+    local-dir: public-script
+    acl: public_read
+    on:
+      branch: master
