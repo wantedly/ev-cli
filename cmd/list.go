@@ -3,8 +3,9 @@ package cmd
 import (
 	"fmt"
 	"github.com/spf13/cobra"
-	"github.com/wantedly/ev/consts"
 	"github.com/wantedly/ev/aws/s3"
+	"github.com/wantedly/ev/consts"
+	"github.com/wantedly/ev/target"
 	"github.com/wantedly/ev/util"
 )
 
@@ -25,7 +26,7 @@ func init() {
 }
 
 func list(cmd *cobra.Command, args []string) error {
-	fmt.Printf("showing targets in \"%s\" namespace\n", listOpts.namespace)
+	fmt.Printf("Showing targets in \"%s\" namespace\n", listOpts.namespace)
 	keyPrefix := consts.ReportDir + "/" + listOpts.namespace + "/"
 
 	paths, err := s3.ListPaths(consts.BucketName, keyPrefix)
@@ -33,7 +34,7 @@ func list(cmd *cobra.Command, args []string) error {
 		return err
 	}
 	for _, p := range paths {
-		fmt.Printf("%s\n", p)
+		fmt.Printf("%s\n", target.PathTo(p))
 	}
 	return nil
 }

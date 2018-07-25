@@ -4,8 +4,8 @@ import (
 	"errors"
 	"fmt"
 	"github.com/spf13/cobra"
-	"github.com/wantedly/ev/consts"
 	"github.com/wantedly/ev/aws/s3"
+	"github.com/wantedly/ev/consts"
 	"github.com/wantedly/ev/target"
 	"github.com/wantedly/ev/util"
 	"strings"
@@ -41,7 +41,7 @@ func download(cmd *cobra.Command, args []string) error {
 	}
 	file := args[1]
 
-	key := consts.ReportDir + "/" + downloadOpts.namespace + "/" + t + "/" + file
+	key := consts.ReportDir + "/" + downloadOpts.namespace + "/" + target.ToPath(t) + "/" + file
 
 	bytes, err := s3.Download(consts.BucketName, key)
 	if err != nil {

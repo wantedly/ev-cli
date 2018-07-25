@@ -3,14 +3,18 @@ package target
 import (
 	"errors"
 	"fmt"
-	"github.com/wantedly/ev/consts"
 	"github.com/wantedly/ev/aws/s3"
+	"github.com/wantedly/ev/consts"
 	"regexp"
+	"strings"
+	"time"
 )
 
 const (
-	validTimestamp = `\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\+09:00`
-	validCommit    = `[1-9a-z]{7}`
+	validTimestamp     = `\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\+09:00`
+	validCommit        = `[0-9a-z]{7}`
+	timestampFormat    = "2006-01-02T15:04:05-07:00"
+	validMinCommitSize = 7
 )
 
 var (
@@ -26,31 +30,53 @@ func Target(t string, namespace string) (string, error) {
 	// NOTE: t is branch
 	branch := t
 	keyPrefix := consts.ReportDir + "/" + namespace + "/"
-	targets, err := s3.ListPaths(consts.BucketName, keyPrefix)
+	paths, err := s3.ListPaths(consts.BucketName, keyPrefix)
 	if err != nil {
 		return "", err
 	}
 
-	tt, err := findLatestMatch(targets, branch)
+	p, err := findLatestMatch(paths, ToPath(branch))
 	if err != nil {
 		return "", errors.New(fmt.Sprintf("%s in \"%s\" namespace", err.Error(), namespace))
 	}
-	return tt, nil
+	return PathTo(p), nil
 }
 
-func Branch(t string) (string, error) {
-	m := validTarget.FindStringSubmatch(t)
-	if len(m) > 0 {
-		return m[1], nil
+func findLatestMatch(paths []string, branch string) (string, error) {
+	for i := len(paths) - 1; i >= 0; i-- {
+		p := paths[i]
+		m := validTarget.FindStringSubmatch(p)
+		if len(m) > 0 && (m[1] == branch) {
+			return p, nil
+		}
 	}
-	return "", errors.New(fmt.Sprintf("Invalid target: %s", t))
+	return "", errors.New(fmt.Sprintf("There is no target in \"%s\" branch", branch))
 }
 
-func Branches(targets []string) ([]string, error) {
+func TargetFrom(t time.Time, branch string, commit string) (string, error) {
+	c, err := normalizeCommit(commit)
+	if err != nil {
+		return "", err
+	}
+	return FormatTime(t) + "-" + branch + "-" + c, nil
+}
+
+func normalizeCommit(commit string) (string, error) {
+	if len(commit) < validMinCommitSize {
+		return "", errors.New(fmt.Sprintf("commithash size is too short: %s", commit))
+	}
+	return commit[:validMinCommitSize], nil
+}
+
+func FormatTime(t time.Time) string {
+	return t.Format(timestampFormat)
+}
+
+func Branches(paths []string) ([]string, error) {
 	visit := map[string]bool{}
 	r := []string{}
-	for _, t := range targets {
-		b, err := Branch(t)
+	for _, p := range paths {
+		b, err := branch(p)
 		if err != nil {
 			return []string{}, err
 		}
@@ -62,13 +88,19 @@ func Branches(targets []string) ([]string, error) {
 	return r, nil
 }
 
-func findLatestMatch(targets []string, branch string) (string, error) {
-	for i := len(targets) - 1; i >= 0; i-- {
-		t := targets[i]
-		m := validTarget.FindStringSubmatch(t)
-		if len(m) > 0 && (m[1] == branch) {
-			return t, nil
-		}
+func branch(path string) (string, error) {
+	m := validTarget.FindStringSubmatch(path)
+	if len(m) > 0 {
+		return PathTo(m[1]), nil
 	}
-	return "", errors.New(fmt.Sprintf("There is no target in \"%s\" branch", branch))
+	return "", errors.New(fmt.Sprintf("Invalid target: %s", path))
+}
+
+// `/` should not be used in path. So we replace `/` with `\`
+func ToPath(s string) string {
+	return strings.Replace(s, "/", "\\", -1)
+}
+
+func PathTo(s string) string {
+	return strings.Replace(s, "\\", "/", -1)
 }
