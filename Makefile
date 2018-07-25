@@ -1,6 +1,7 @@
-NAME    := ev
-VERSION := 0.0.1
-LDFLAGS := -ldflags="-s -w"
+NAME     := ev
+VERSION  := 0.0.1
+REVISION := $(shell git rev-parse --short HEAD)
+LDFLAGS  := -ldflags="-s -w -X \"main.Version=$(VERSION)\" -X \"main.Revision=$(REVISION)\" -extldflags \"-static\""
 
 OS := darwin linux
 
