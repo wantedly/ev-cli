@@ -4,8 +4,8 @@ import (
 	"errors"
 	"fmt"
 	"github.com/spf13/cobra"
-	"github.com/wantedly/ev/consts"
 	"github.com/wantedly/ev/aws/s3"
+	"github.com/wantedly/ev/consts"
 	"github.com/wantedly/ev/target"
 	"github.com/wantedly/ev/util"
 )
@@ -36,8 +36,8 @@ func listFiles(cmd *cobra.Command, args []string) error {
 		return err
 	}
 
-	fmt.Printf("showing files in \"%s\" target\n", listFilesOpts.namespace+"/"+t)
-	keyPrefix := consts.ReportDir + "/" + listFilesOpts.namespace + "/" + t + "/"
+	fmt.Printf("Showing files in \"%s\" target\n", listFilesOpts.namespace+"/"+t)
+	keyPrefix := consts.ReportDir + "/" + listFilesOpts.namespace + "/" + target.ToPath(t) + "/"
 
 	files, err := s3.ListFiles(consts.BucketName, keyPrefix)
 	if err != nil {

@@ -5,6 +5,7 @@ import (
 	"github.com/aws/aws-sdk-go/service/s3"
 	"github.com/aws/aws-sdk-go/service/s3/s3manager"
 	"github.com/wantedly/ev/aws/session"
+	"io"
 	"strings"
 )
 
@@ -21,6 +22,18 @@ func Download(bucket string, key string) ([]byte, error) {
 		return []byte{}, err
 	}
 	return buff.Bytes(), nil
+}
+
+func Upload(bucket string, key string, r io.Reader) error {
+	uploader := s3manager.NewUploader(session.Session())
+	upParams := &s3manager.UploadInput{
+		Bucket: aws.String(bucket),
+		Key:    aws.String(key),
+		Body:   r,
+	}
+	// NOTE: UploadOutput is not necessary, so _ is used
+	_, err := uploader.Upload(upParams)
+	return err
 }
 
 func ListFiles(bucket string, prefix string) ([]string, error) {

@@ -3,8 +3,8 @@ package cmd
 import (
 	"fmt"
 	"github.com/spf13/cobra"
-	"github.com/wantedly/ev/consts"
 	"github.com/wantedly/ev/aws/s3"
+	"github.com/wantedly/ev/consts"
 	"github.com/wantedly/ev/target"
 	"github.com/wantedly/ev/util"
 )
@@ -26,7 +26,7 @@ func init() {
 }
 
 func listBranch(cmd *cobra.Command, args []string) error {
-	fmt.Printf("showing branches in \"%s\" namespace\n", listBranchOpts.namespace)
+	fmt.Printf("Showing branches in \"%s\" namespace\n", listBranchOpts.namespace)
 	keyPrefix := consts.ReportDir + "/" + listBranchOpts.namespace + "/"
 
 	paths, err := s3.ListPaths(consts.BucketName, keyPrefix)
