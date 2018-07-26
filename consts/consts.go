@@ -5,4 +5,5 @@ package consts
 const (
 	BucketName = "wantedly-evaluate"
 	ReportDir  = "report"
+	TriggerDir = "trigger"
 )

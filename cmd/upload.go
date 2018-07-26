@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"github.com/spf13/cobra"
 	"github.com/wantedly/ev/aws/s3"
+	e "github.com/wantedly/ev/cmd/export"
 	"github.com/wantedly/ev/consts"
 	"github.com/wantedly/ev/target"
 	"github.com/wantedly/ev/util"
@@ -30,8 +31,8 @@ var uploadOpts = struct {
 func init() {
 	uploadCmd := &cobra.Command{
 		Use:   "upload",
-		Short: "Upload evaluation result files in a target",
-		Long: `Upload evaluation result files in a target
+		Short: "Upload evaluation result files as a target and export it to bigquery",
+		Long: `Upload evaluation result files as a target and export it to bigquery
 
 Example.
 $ ev upload --out ./out.txt \
@@ -70,7 +71,7 @@ func upload(cmd *cobra.Command, args []string) error {
 	if err != nil {
 		return err
 	}
-	fmt.Printf("Upload files in \"%s\" target to \"%s\" namespace\n", t, uploadOpts.namespace)
+	fmt.Printf("Upload files as \"%s\" target to \"%s\" namespace\n", t, uploadOpts.namespace)
 
 	if err := uploadFile(uploadOpts.namespace, t, "evaluate", uploadOpts.out); err != nil {
 		return err
@@ -78,12 +79,17 @@ func upload(cmd *cobra.Command, args []string) error {
 	if err := uploadFile(uploadOpts.namespace, t, "", uploadOpts.metrics); err != nil {
 		return err
 	}
-
 	if err := uploadContext(uploadOpts.namespace, t, uploadOpts.branch, uploadOpts.commit, datetime); err != nil {
 		return err
 	}
-
 	fmt.Printf("Success! Files in \"%s\" target are uploaded!\n", t)
+
+	// NOTE: Export after upload
+	e.PrintStart(t, exportOpts.namespace)
+	if err := e.Export(t, uploadOpts.namespace); err != nil {
+		return err
+	}
+	e.PrintSuccess(t, exportOpts.namespace)
 
 	return nil
 }
@@ -130,8 +136,9 @@ func uploadContext(namespace, t, branch, commithash string, datetime time.Time) 
 	filename := "context.json"
 	key := consts.ReportDir + "/" + namespace + "/" + target.ToPath(t) + "/" + filename
 	fmt.Printf("uploading %s...\n", filename)
-	if err = s3.Upload(consts.BucketName, key, bytes.NewBuffer(j)); err != nil {
+	if err := s3.Upload(consts.BucketName, key, bytes.NewBuffer(j)); err != nil {
 		return err
 	}
+
 	return nil
 }
