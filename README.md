@@ -1,4 +1,4 @@
-# Ev CLI
+# ev-cli
 
 [![Build Status](https://travis-ci.com/wantedly/ev-cli.svg?token=zsMaScwD2c3BqH37pucy&branch=master)](https://travis-ci.com/wantedly/ev-cli)
 
