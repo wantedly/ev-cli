@@ -15,7 +15,7 @@ $ brew tap wantedly/tools git@github.com:wantedly/homebrew-tools
 $ brew install ev
 ```
 
-### Other platforms (Win/Linux)
+### Other platforms (Linux)
 
 You can download executable file at [HERE](https://github.com/wantedly/ev-cli/releases).
 
