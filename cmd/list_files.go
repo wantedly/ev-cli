@@ -16,8 +16,8 @@ var listFilesOpts = struct {
 
 func init() {
 	listFilesCmd := &cobra.Command{
-		Use:   "ls-files <target>",
-		Short: "List files in a target",
+		Use:   "ls-files <target or branch>",
+		Short: "List files in a target or branch",
 		RunE:  listFiles,
 	}
 
@@ -28,7 +28,7 @@ func init() {
 
 func listFiles(cmd *cobra.Command, args []string) error {
 	if len(args) == 0 {
-		return errors.New("<target> should be specified!\n")
+		return errors.New("<target or branch> should be specified!\n")
 	}
 
 	t, err := target.Target(args[0], listFilesOpts.namespace)
