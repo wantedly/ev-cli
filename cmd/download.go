@@ -17,8 +17,8 @@ var downloadOpts = struct {
 
 func init() {
 	downloadCmd := &cobra.Command{
-		Use:   "download <target> <file>",
-		Short: "Download a file in a target",
+		Use:   "download <target or branch> <file>",
+		Short: "Download a file in a target or branch",
 		RunE:  download,
 	}
 
@@ -29,7 +29,7 @@ func init() {
 
 func download(cmd *cobra.Command, args []string) error {
 	if len(args) == 0 {
-		return errors.New("<target> and <file> should be specified!\n")
+		return errors.New("<target or branch> and <file> should be specified!\n")
 	}
 	if len(args) <= 1 {
 		return errors.New("<file> should be specified!\n")
