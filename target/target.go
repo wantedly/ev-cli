@@ -72,6 +72,14 @@ func FormatTime(t time.Time) string {
 	return t.Format(timestampFormat)
 }
 
+func ValidateTarget(t string) error {
+	if validTarget.MatchString(t) {
+		return nil
+	} else {
+		return errors.New(fmt.Sprintf("The format of target is invalid: %s", t))
+	}
+}
+
 func Branches(paths []string) ([]string, error) {
 	visit := map[string]bool{}
 	r := []string{}
