@@ -4,10 +4,10 @@ import (
 	"errors"
 	"fmt"
 	"github.com/spf13/cobra"
-	"github.com/wantedly/ev/aws/s3"
-	"github.com/wantedly/ev/consts"
-	"github.com/wantedly/ev/target"
-	"github.com/wantedly/ev/util"
+	"github.com/wantedly/ev-cli/aws/s3"
+	"github.com/wantedly/ev-cli/consts"
+	"github.com/wantedly/ev-cli/target"
+	"github.com/wantedly/ev-cli/util"
 )
 
 var listFilesOpts = struct {

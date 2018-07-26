@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/wantedly/ev/cmd"
+	"github.com/wantedly/ev-cli/cmd"
 )
 
 var (

@@ -3,8 +3,8 @@ package cmd
 import (
 	"errors"
 	"github.com/spf13/cobra"
-	e "github.com/wantedly/ev/cmd/export"
-	"github.com/wantedly/ev/util"
+	e "github.com/wantedly/ev-cli/cmd/export"
+	"github.com/wantedly/ev-cli/util"
 )
 
 var exportOpts = struct {

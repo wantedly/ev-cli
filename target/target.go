@@ -3,8 +3,8 @@ package target
 import (
 	"errors"
 	"fmt"
-	"github.com/wantedly/ev/aws/s3"
-	"github.com/wantedly/ev/consts"
+	"github.com/wantedly/ev-cli/aws/s3"
+	"github.com/wantedly/ev-cli/consts"
 	"regexp"
 	"strings"
 	"time"
