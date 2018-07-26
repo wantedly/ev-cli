@@ -60,19 +60,20 @@ aws_secret_access_key = zX..........................
 
 ```sh-session
 $ ev
-CLI tool for managing evaluation result
+CLI tool for managing evaluation data
 
 Usage:
   ev [command]
 
 Available Commands:
   download    Download a file in a target or branch
+  export      Export evaluation result files in a target to bigquery
   help        Help about any command
   ls          List targets in a namespace
   ls-branch   List branches in a namespace
   ls-files    List files in a target or branch
   namespaces  List namespaces
-  upload      Upload evaluation result files in a target
+  upload      Upload evaluation result files as a target and export it to bigquery
   version     Print the version number of ev
 
 Flags:
