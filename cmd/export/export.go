@@ -3,9 +3,9 @@ package export
 import (
 	"bytes"
 	"fmt"
-	"github.com/wantedly/ev/aws/s3"
-	"github.com/wantedly/ev/consts"
-	"github.com/wantedly/ev/target"
+	"github.com/wantedly/ev-cli/aws/s3"
+	"github.com/wantedly/ev-cli/consts"
+	"github.com/wantedly/ev-cli/target"
 )
 
 func Export(t, namespace string) error {

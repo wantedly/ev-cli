@@ -3,8 +3,8 @@ package cmd
 import (
 	"fmt"
 	"github.com/spf13/cobra"
-	"github.com/wantedly/ev/consts"
-	"github.com/wantedly/ev/aws/s3"
+	"github.com/wantedly/ev-cli/consts"
+	"github.com/wantedly/ev-cli/aws/s3"
 )
 
 var namespacesOpts = struct {

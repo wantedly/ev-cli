@@ -10,8 +10,8 @@ import (
 var (
 	RootCmd = &cobra.Command{
 		Use:           "ev",
-		Short:         "CLI tool for managing evaluation result",
-		Long:          "CLI tool for managing evaluation result ",
+		Short:         "CLI tool for managing evaluation data",
+		Long:          "CLI tool for managing evaluation data",
 		SilenceErrors: true,
 	}
 )

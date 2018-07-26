@@ -1,6 +1,6 @@
 package consts
 
-// This pakcage globaly shared information of ev.
+// This pakcage contains globaly shared information
 
 const (
 	BucketName = "wantedly-evaluate"

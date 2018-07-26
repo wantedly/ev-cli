@@ -1,8 +1,8 @@
-# Ev
+# Ev CLI
 
-[![Build Status](https://travis-ci.com/wantedly/ev.svg?token=zsMaScwD2c3BqH37pucy&branch=master)](https://travis-ci.com/wantedly/ev)
+[![Build Status](https://travis-ci.com/wantedly/ev-cli.svg?token=zsMaScwD2c3BqH37pucy&branch=master)](https://travis-ci.com/wantedly/ev-cli)
 
-CLI tool for managing evaluation result.
+CLI tool for managing evaluation data.
 
 ## Installation
 
@@ -17,7 +17,7 @@ $ brew install ev
 
 ### Other platforms (Win/Linux)
 
-You can download executable file at [HERE](https://github.com/wantedly/ev/releases).
+You can download executable file at [HERE](https://github.com/wantedly/ev-cli/releases).
 
 Or, you can download a script for installation.
 
@@ -27,7 +27,7 @@ bash <(curl -sL https://get.wantedlyapp.com/ev)
 
 ## Prerequisites
 
-ev requires:
+ev-cli requires:
 
 - AWS credentials
 
@@ -83,7 +83,7 @@ Use "ev [command] --help" for more information about a command.
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/wantedly/ev.
+Bug reports and pull requests are welcome on GitHub at https://github.com/wantedly/ev-cli.
 
 ## Development
 
