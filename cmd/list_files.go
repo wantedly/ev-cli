@@ -36,7 +36,7 @@ func listFiles(cmd *cobra.Command, args []string) error {
 		return err
 	}
 
-	fmt.Printf("Showing files in \"%s\" target\n", listFilesOpts.namespace+"/"+t)
+	fmt.Printf("Showing files in \"%s\" target in \"%s\" namespace\n", t, listFilesOpts.namespace)
 	keyPrefix := consts.ReportDir + "/" + listFilesOpts.namespace + "/" + target.ToPath(t) + "/"
 
 	files, err := s3.ListFiles(consts.BucketName, keyPrefix)
