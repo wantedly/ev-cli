@@ -1,5 +1,5 @@
 NAME     := ev
-VERSION  := 1.0.0
+VERSION  := 1.0.1
 REVISION := $(shell git rev-parse --short HEAD)
 LDFLAGS  := -ldflags="-s -w -X \"main.Version=$(VERSION)\" -X \"main.Revision=$(REVISION)\" -extldflags \"-static\""
 
