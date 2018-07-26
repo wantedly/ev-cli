@@ -27,7 +27,7 @@ func GetCurrentBranch() (string, error) {
 		return "", err
 	}
 	s := strings.TrimRight(string(out), "\r\n")
-	return strings.TrimRight(s, "\r\n"), err
+	return s, nil
 }
 
 func GetCurrentCommit() (string, error) {
@@ -38,7 +38,7 @@ func GetCurrentCommit() (string, error) {
 		return "", err
 	}
 	s := strings.TrimRight(string(out), "\r\n")
-	return s, err
+	return s, nil
 }
 
 func CurrentJSTTime() time.Time {
