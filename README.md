@@ -12,7 +12,7 @@ Formula is avaliable at wantedly/homebrew-tools.
 
 ```sh-session
 $ brew tap wantedly/tools git@github.com:wantedly/homebrew-tools
-$ brew install ev
+$ brew install ev-cli
 ```
 
 ### Other platforms (Linux)
@@ -22,7 +22,7 @@ You can download executable file at [HERE](https://github.com/wantedly/ev-cli/re
 Or, you can download a script for installation.
 
 ```console
-bash <(curl -sL https://get.wantedlyapp.com/ev)
+bash <(curl -sL https://get.wantedlyapp.com/ev-cli)
 ```
 
 ## Prerequisites
@@ -54,7 +54,7 @@ aws_access_key_id = AK................
 aws_secret_access_key = zX..........................
 ```
 
-`ev` automatically set AWS_REGION as `ap-northeast-1`.
+`ev-cli` automatically set AWS_REGION as `ap-northeast-1`.
 
 ## Usage
 

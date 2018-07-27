@@ -11,7 +11,7 @@ before_deploy:
   - make cross-build
   - make dist
   - make publish
-  - mkdir -p public-script && cp script/install.sh public-script/ev
+  - mkdir -p public-script && cp script/install.sh public-script/ev-cli
 deploy:
   - provider: releases
     skip_cleanup: true
@@ -27,7 +27,7 @@ deploy:
     bucket: private-dev-tools.wantedly.com
     skip_cleanup: true
     local-dir: dist/publish
-    upload-dir: ev
+    upload-dir: ev-cli
     acl: public_read
     on:
       tags: true

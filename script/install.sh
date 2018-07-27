@@ -30,11 +30,11 @@ else
 fi
 
 # download
-echo "Installing ev $EV_VERSION for $OS-$ARCH to $DEST"
+echo "Installing ev-cli $EV_VERSION for $OS-$ARCH to $DEST"
 query=".assets[] | select(.name | contains(\"$OS\") and contains(\"$ARCH\") and contains(\"$EXTENSION\")) | .id"
 id=$(curl -s https://$TOKEN@api.github.com/repos/wantedly/ev-cli/releases/$RELEASE_PATH | jq "$query")
 mkdir -p $DEST
 curl -sLJ -H 'Accept: application/octet-stream' https://$TOKEN@api.github.com/repos/wantedly/ev-cli/releases/assets/$id | tar xz -C $DEST --strip=1 "$OS-$ARCH/ev"
-echo "ev has successfully been installed to $DEST"
+echo "ev-cli has successfully been installed to $DEST"
 echo "You might want to add the line below to the shell profile"
 echo "  export PATH=${DEST/$HOME/\$HOME}:\$PATH"
