@@ -14,7 +14,7 @@ var exportOpts = struct {
 func init() {
 	exportCmd := &cobra.Command{
 		Use:   "export <target>",
-		Short: "Export evaluation result files in a target to bigquery",
+		Short: "(Used only for debugging ex-export) Export evaluation result files in a target to bigquery",
 		RunE:  export,
 	}
 
