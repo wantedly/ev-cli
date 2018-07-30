@@ -10,8 +10,8 @@ import (
 	"github.com/wantedly/ev-cli/consts"
 	"github.com/wantedly/ev-cli/target"
 	"github.com/wantedly/ev-cli/util"
+	"io"
 	"os"
-	"path/filepath"
 	"time"
 )
 
@@ -21,11 +21,12 @@ const (
 )
 
 var uploadOpts = struct {
-	branch    string
-	commit    string
-	out       string
-	metrics   string
-	namespace string
+	branch         string
+	commit         string
+	out            string
+	metrics        string
+	hyperparameter string
+	namespace      string
 }{}
 
 func init() {
@@ -45,6 +46,7 @@ $ ev upload --out ./out.txt \
 	uploadCmd.PersistentFlags().StringVarP(&uploadOpts.commit, "commit", "c", currentCommit, "target commithash")
 	uploadCmd.PersistentFlags().StringVarP(&uploadOpts.out, "out", "o", "./out.txt", "target out file")
 	uploadCmd.PersistentFlags().StringVarP(&uploadOpts.metrics, "metrics", "m", "./metrics.json", "target metrics file")
+	uploadCmd.PersistentFlags().StringVarP(&uploadOpts.hyperparameter, "hyperparameter", "p", "", "target hyper parameter file")
 	uploadCmd.PersistentFlags().StringVarP(&uploadOpts.namespace, "namespace", "n", util.GetWorkingDirectoryName(), "target namespace name")
 
 	RootCmd.AddCommand(uploadCmd)
@@ -73,13 +75,16 @@ func upload(cmd *cobra.Command, args []string) error {
 	}
 	fmt.Printf("Upload files as \"%s\" target to \"%s\" namespace\n", t, uploadOpts.namespace)
 
-	if err := uploadFile(uploadOpts.namespace, t, "evaluate", uploadOpts.out); err != nil {
+	if err := uploadFile(uploadOpts.namespace, t, uploadOpts.out, "evaluate/out.txt"); err != nil {
 		return err
 	}
-	if err := uploadFile(uploadOpts.namespace, t, "", uploadOpts.metrics); err != nil {
+	if err := uploadFile(uploadOpts.namespace, t, uploadOpts.metrics, "metrics.json"); err != nil {
 		return err
 	}
 	if err := uploadContext(uploadOpts.namespace, t, uploadOpts.branch, uploadOpts.commit, datetime); err != nil {
+		return err
+	}
+	if err := uploadHyperParameter(uploadOpts.namespace, t, uploadOpts.hyperparameter); err != nil {
 		return err
 	}
 	fmt.Printf("Success! Files in \"%s\" target are uploaded!\n", t)
@@ -94,23 +99,36 @@ func upload(cmd *cobra.Command, args []string) error {
 	return nil
 }
 
-func uploadFile(namespace, t, dir, f string) error {
-	keyPrefix := consts.ReportDir + "/" + namespace + "/" + target.ToPath(t)
-	_, filename := filepath.Split(f)
-	var key string
-	if dir == "" {
-		key = keyPrefix + "/" + filename
-	} else {
-		key = keyPrefix + "/" + dir + "/" + filename
-	}
+func uploadFile(namespace, t, src, dst string) error {
+	key := consts.ReportDir + "/" + namespace + "/" + target.ToPath(t) + "/" + dst
 
-	file, err := os.Open(f)
+	file, err := os.Open(src)
 	if err != nil {
 		return err
 	}
 
-	fmt.Printf("uploading %s...\n", f)
+	fmt.Printf("uploading %s...\n", src)
 	if err = s3.Upload(consts.BucketName, key, file); err != nil {
+		return err
+	}
+	return nil
+}
+
+func uploadHyperParameter(namespace, t, f string) error {
+	var r io.Reader
+	if f == "" {
+		r = bytes.NewBufferString("{}")
+	} else {
+		file, err := os.Open(f)
+		r = file
+		if err != nil {
+			return err
+		}
+	}
+
+	fmt.Printf("uploading %s...\n", "hyperparameter")
+	key := consts.ReportDir + "/" + namespace + "/" + target.ToPath(t) + "/hyperparameter.json"
+	if err := s3.Upload(consts.BucketName, key, r); err != nil {
 		return err
 	}
 	return nil
