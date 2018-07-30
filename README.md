@@ -67,7 +67,7 @@ Usage:
 
 Available Commands:
   download    Download a file in a target or branch
-  export      Export evaluation result files in a target to bigquery
+  export      (Used only for debugging ex-export) Export evaluation result files in a target to bigquery
   help        Help about any command
   ls          List targets in a namespace
   ls-branch   List branches in a namespace
