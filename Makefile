@@ -34,6 +34,7 @@ publish:
 	mkdir -p dist/publish
 	@for os in $(OS); do \
 		cp ./dist/$(NAME)-v$(VERSION)-$$os-amd64.tar.gz ./dist/publish/; \
+		cp ./dist/$(NAME)-v$(VERSION)-$$os-amd64.tar.gz ./dist/publish/$(NAME)-latest-$$os-amd64.tar.gz; \
 	done
 
 .PHONY: release
