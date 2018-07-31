@@ -58,6 +58,8 @@ aws_secret_access_key = zX..........................
 
 ## Usage
 
+- [ev-cli の使い方](https://github.com/wantedly/ev-cli/blob/master/docs/usage.md)
+
 ```sh-session
 $ ev
 CLI tool for managing evaluation data
