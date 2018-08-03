@@ -6,17 +6,6 @@ CLI tool for managing evaluation data.
 
 ## Installation
 
-### For OSX (Using Homebrew)
-
-Formula is avaliable at wantedly/homebrew-tools.
-
-```sh-session
-$ brew tap wantedly/tools git@github.com:wantedly/homebrew-tools
-$ brew install ev-cli
-```
-
-### Other platforms (Linux)
-
 You can download executable file at [HERE](https://github.com/wantedly/ev-cli/releases).
 
 Or, you can download a script for installation.
