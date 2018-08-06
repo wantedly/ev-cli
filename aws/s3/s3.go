@@ -73,16 +73,49 @@ func ListPaths(bucket string, prefix string) ([]string, error) {
 	return r, nil
 }
 
+// listObjects returns *s3.ListObjectsV2Output object, which contains all
+// Contents and all CommonPrefixes returned by all paginated requests.
+// Other properties are same with the first response.
 func listObjects(bucket string, prefix string, delimiter string) (*s3.ListObjectsV2Output, error) {
-	cli := s3.New(session.Session())
-
 	input := &s3.ListObjectsV2Input{
 		Bucket:    aws.String(bucket),
 		Prefix:    aws.String(prefix),
 		Delimiter: aws.String(delimiter),
 	}
 
-	resp, err := cli.ListObjectsV2(input)
+	return listObjectsImpl(input)
+}
 
-	return resp, err
+func listObjectsImpl(input *s3.ListObjectsV2Input) (*s3.ListObjectsV2Output, error) {
+	cli := s3.New(session.Session())
+
+	// NOTE: Try once
+	resp, err := cli.ListObjectsV2(input)
+	if err != nil {
+		return nil, err
+	}
+
+	if !(*resp.IsTruncated) {
+		return resp, nil
+	}
+
+	// NOTE: response is truncated, so loop until response reach last
+	input.SetContinuationToken(*resp.NextContinuationToken)
+	for {
+		r, err := cli.ListObjectsV2(input)
+		if err != nil {
+			return nil, err
+		}
+
+		resp.Contents = append(resp.Contents, r.Contents...)
+		resp.CommonPrefixes = append(resp.CommonPrefixes, r.CommonPrefixes...)
+
+		if !(*r.IsTruncated) {
+			// NOTE: Reached to last object
+			break
+		}
+		input.SetContinuationToken(*r.NextContinuationToken)
+	}
+
+	return resp, nil
 }
