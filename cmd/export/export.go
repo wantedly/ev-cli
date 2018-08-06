@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"fmt"
 	"github.com/wantedly/ev-cli/aws/s3"
+	"github.com/wantedly/ev-cli/config"
 	"github.com/wantedly/ev-cli/consts"
 	"github.com/wantedly/ev-cli/target"
 )
@@ -15,7 +16,7 @@ func Export(t, namespace string) error {
 
 	key := consts.TriggerDir + "/" + namespace + "/" + target.ToPath(t)
 
-	if err := s3.Upload(consts.BucketName, key, new(bytes.Buffer)); err != nil {
+	if err := s3.Upload(config.Bucket, key, new(bytes.Buffer)); err != nil {
 		return err
 	}
 

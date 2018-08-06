@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/spf13/cobra"
 	"github.com/wantedly/ev-cli/aws/s3"
+	"github.com/wantedly/ev-cli/config"
 	"github.com/wantedly/ev-cli/consts"
 	"github.com/wantedly/ev-cli/target"
 	"github.com/wantedly/ev-cli/util"
@@ -42,7 +43,7 @@ func download(cmd *cobra.Command, args []string) error {
 
 	key := consts.ReportDir + "/" + downloadOpts.namespace + "/" + target.ToPath(t) + "/" + file
 
-	bytes, err := s3.Download(consts.BucketName, key)
+	bytes, err := s3.Download(config.Bucket, key)
 	if err != nil {
 		return err
 	}
