@@ -7,6 +7,7 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/wantedly/ev-cli/aws/s3"
 	e "github.com/wantedly/ev-cli/cmd/export"
+	"github.com/wantedly/ev-cli/config"
 	"github.com/wantedly/ev-cli/consts"
 	"github.com/wantedly/ev-cli/target"
 	"github.com/wantedly/ev-cli/util"
@@ -108,7 +109,7 @@ func uploadFile(namespace, t, src, dst string) error {
 	}
 
 	fmt.Printf("uploading %s...\n", src)
-	if err = s3.Upload(consts.BucketName, key, file); err != nil {
+	if err = s3.Upload(config.Bucket, key, file); err != nil {
 		return err
 	}
 	return nil
@@ -128,7 +129,7 @@ func uploadHyperParameter(namespace, t, f string) error {
 
 	fmt.Printf("uploading %s...\n", "hyperparameter")
 	key := consts.ReportDir + "/" + namespace + "/" + target.ToPath(t) + "/hyperparameter.json"
-	if err := s3.Upload(consts.BucketName, key, r); err != nil {
+	if err := s3.Upload(config.Bucket, key, r); err != nil {
 		return err
 	}
 	return nil
@@ -154,7 +155,7 @@ func uploadContext(namespace, t, branch, commithash string, datetime time.Time) 
 	filename := "context.json"
 	key := consts.ReportDir + "/" + namespace + "/" + target.ToPath(t) + "/" + filename
 	fmt.Printf("uploading %s...\n", filename)
-	if err := s3.Upload(consts.BucketName, key, bytes.NewBuffer(j)); err != nil {
+	if err := s3.Upload(config.Bucket, key, bytes.NewBuffer(j)); err != nil {
 		return err
 	}
 

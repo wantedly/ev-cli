@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/pkg/errors"
 	"github.com/wantedly/ev-cli/aws/s3"
+	"github.com/wantedly/ev-cli/config"
 	"github.com/wantedly/ev-cli/consts"
 	"regexp"
 	"strings"
@@ -30,7 +31,7 @@ func Target(t string, namespace string) (string, error) {
 	// NOTE: t is branch
 	branch := t
 	keyPrefix := consts.ReportDir + "/" + namespace + "/"
-	paths, err := s3.ListPaths(consts.BucketName, keyPrefix)
+	paths, err := s3.ListPaths(config.Bucket, keyPrefix)
 	if err != nil {
 		return "", err
 	}

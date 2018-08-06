@@ -21,12 +21,7 @@ func Download(bucket string, key string) ([]byte, error) {
 			Key:    aws.String(key),
 		})
 	if err != nil {
-		if aerr, ok := err.(awserr.Error); ok {
-			if aerr.Code() == s3.ErrCodeNoSuchKey {
-				return []byte{}, errors.Wrapf(aerr, "Error in \"s3://%s/%s\"", bucket, key)
-			}
-		}
-		return []byte{}, err
+		return []byte{}, wrap(err, bucket, key)
 	}
 	return buff.Bytes(), nil
 }
@@ -40,7 +35,7 @@ func Upload(bucket string, key string, r io.Reader) error {
 	}
 	// NOTE: UploadOutput is not necessary, so _ is used
 	_, err := uploader.Upload(upParams)
-	return err
+	return wrap(err, bucket, key)
 }
 
 func ListFiles(bucket string, prefix string) ([]string, error) {
@@ -83,7 +78,11 @@ func listObjects(bucket string, prefix string, delimiter string) (*s3.ListObject
 		Delimiter: aws.String(delimiter),
 	}
 
-	return listObjectsImpl(input)
+	o, err := listObjectsImpl(input)
+	if err != nil {
+		return nil, wrap(err, bucket, prefix)
+	}
+	return o, nil
 }
 
 func listObjectsImpl(input *s3.ListObjectsV2Input) (*s3.ListObjectsV2Output, error) {
@@ -118,4 +117,11 @@ func listObjectsImpl(input *s3.ListObjectsV2Input) (*s3.ListObjectsV2Output, err
 	}
 
 	return resp, nil
+}
+
+func wrap(err error, bucket, key string) error {
+	if aerr, ok := err.(awserr.Error); ok {
+		return errors.Wrapf(aerr, "Error in \"s3://%s/%s\"", bucket, key)
+	}
+	return err
 }
