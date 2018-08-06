@@ -8,7 +8,6 @@ import (
 	"github.com/wantedly/ev-cli/consts"
 	"github.com/wantedly/ev-cli/target"
 	"github.com/wantedly/ev-cli/util"
-	"strings"
 )
 
 var downloadOpts = struct {
@@ -45,11 +44,6 @@ func download(cmd *cobra.Command, args []string) error {
 
 	bytes, err := s3.Download(consts.BucketName, key)
 	if err != nil {
-		if err.Error()[:10] == "NoSuchKey:" {
-			// NOTE: Handle NoSuchKey error
-			s := strings.TrimPrefix(key, consts.ReportDir+"/"+downloadOpts.namespace+"/")
-			return errors.New(fmt.Sprintf("NoSuchKey: \"%s\" does not exist", s))
-		}
 		return err
 	}
 	fmt.Printf(string(bytes))
