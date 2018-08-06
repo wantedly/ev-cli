@@ -2,8 +2,10 @@ package s3
 
 import (
 	"github.com/aws/aws-sdk-go/aws"
+	"github.com/aws/aws-sdk-go/aws/awserr"
 	"github.com/aws/aws-sdk-go/service/s3"
 	"github.com/aws/aws-sdk-go/service/s3/s3manager"
+	"github.com/pkg/errors"
 	"github.com/wantedly/ev-cli/aws/session"
 	"io"
 	"strings"
@@ -19,6 +21,11 @@ func Download(bucket string, key string) ([]byte, error) {
 			Key:    aws.String(key),
 		})
 	if err != nil {
+		if aerr, ok := err.(awserr.Error); ok {
+			if aerr.Code() == s3.ErrCodeNoSuchKey {
+				return []byte{}, errors.Wrapf(aerr, "Error in \"s3://%s/%s\"", bucket, key)
+			}
+		}
 		return []byte{}, err
 	}
 	return buff.Bytes(), nil

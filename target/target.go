@@ -1,8 +1,8 @@
 package target
 
 import (
-	"errors"
 	"fmt"
+	"github.com/pkg/errors"
 	"github.com/wantedly/ev-cli/aws/s3"
 	"github.com/wantedly/ev-cli/consts"
 	"regexp"
@@ -37,7 +37,7 @@ func Target(t string, namespace string) (string, error) {
 
 	p, err := findLatestMatch(paths, ToPath(branch))
 	if err != nil {
-		return "", errors.New(fmt.Sprintf("%s in \"%s\" namespace", err.Error(), namespace))
+		return "", errors.Wrapf(err, "Error in \"%s\" namespace", namespace)
 	}
 	return PathTo(p), nil
 }
