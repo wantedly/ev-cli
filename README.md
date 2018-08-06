@@ -47,6 +47,8 @@ aws_secret_access_key = zX..........................
 
 ## Usage
 
+ev-cli can display a list of offline evaluation data, upload it, and download it. That data is stored in AWS S3.
+
 ```sh-session
 $ ev
 CLI tool for managing evaluation data
@@ -69,6 +71,21 @@ Flags:
   -h, --help   help for ev
 
 Use "ev [command] --help" for more information about a command.
+```
+
+## Configuration
+
+You can set s3-bucket used by ev-cli in the configuration file. The default value is `wantedly-evaluate`.
+
+```yml
+# ~/.ev/config.yml
+bucket: some-bucket
+```
+
+The configuration file in ~/.ev/config.yml is used by default, but you can also use the `--config` option to specify another configuration file.
+
+```console
+$ ev ls --config ./config.yml
 ```
 
 ## Contributing
